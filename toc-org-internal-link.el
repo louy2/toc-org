@@ -5,7 +5,7 @@
 ;; Author: Yufan Lou <loganlyf [at] gmail.com>
 ;; Version: 1.0
 ;; Keywords: org-mode org-toc toc-org org toc table of contents link
-;; URL: https://github.com/snosov1/toc-org
+;; URL: https://github.com/louy2/toc-org
 
 ;; This program is free software; you can redistribute it and/or
 ;; modify it under the terms of the GNU General Public License as
@@ -27,7 +27,7 @@
 ;; toc-org-internal-link makes links of toc-org go to headings in
 ;; Emacs as well. Using :CUSTOM_ID: property which org-mode supports.
 
-;; For details, see https://github.com/snosov1/toc-org
+;; For details, see https://github.com/louy2/toc-org
 
 ;;; Code:
 
@@ -39,7 +39,8 @@
 gh style href."
   :group 'toc-org)
 
-(defconst toc-org-toc-tag-regexp "-{toc\\([@_][0-9]\\|\\([@_][0-9][@_][a-zA-Z]+\\)\\)?}")
+(defconst toc-org-toc-tag-regexp
+  "-{toc\\([@_][0-9]\\|\\([@_][0-9][@_][a-zA-Z]+\\)\\)?}")
 
 (defun toc-org--set-custom-id ()
   "Set :CUSTOM_ID: property of current entry to current heading
@@ -55,7 +56,7 @@ hrefified."
   (interactive)
   (if (equal toc-org-hrefify-default "gh")
       (org-map-entries '(toc-org--set-custom-id)
-                       toc-org-toc-tag-regexp)))
+                       toc-org-toc-tag-regexp))) ;; skip toc itself
 
 (provide 'toc-org-internal-link)
 ;;; toc-org-internal-link.el ends here
