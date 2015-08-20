@@ -58,5 +58,35 @@ hrefified."
       (org-map-entries '(toc-org--set-custom-id)
                        toc-org-toc-tag-regexp))) ;; skip toc itself
 
+(defun toc-org--get-property-block ()
+  "Get the property block (from beginning of :PROPERTIES: to end of
+ :END:) of the current heading."
+  (let* ((prop (org-get-property-block))
+         (beg (car-safe prop))  ; 1st line of prop
+         (end (cdr-safe prop))) ; beg of :END:
+    (unless (null prop)         ; nil if no property
+      (let ((prop-beg           ; beg of :PROPERTIES:
+             (save-excursion
+               (set-window-point nil beg)
+               (forward-line -1) (point)))
+            (prop-end           ; end of :END:
+             (save-excursion
+               (set-window-point nil end)
+               (end-of-line) (point))))
+        (cons prop-beg prop-end)))))
+
+(defun toc-org-hide-properties ()
+  "Hide properties under the current heading."
+  (interactive)
+  (let* ((prop (toc-org--get-property-block))
+         (beg (car-safe prop))
+         (end (cdr-safe prop)))
+    (unless (null prop)
+      (outline-flag-region beg end t))))
+
+(defun toc-org-hide-all-properties ()
+  (interactive)
+  (org-map-entries '(toc-org-hide-properties)))
+
 (provide 'toc-org-internal-link)
 ;;; toc-org-internal-link.el ends here
